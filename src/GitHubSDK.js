@@ -1,24 +1,55 @@
-// import {
-//     require
-// } from "yargs";
-
-// global.fetch = require("node-fetch");
-// global.fetch = require("node-fetch").default;
-
-
-
 class GitHubSDK {
 
-    construktor(nick) {
+    constructor(nick, secret) {
         this.url = `https://api.github.com`;
         this.nick = nick;
-        // this.secret = secret;
-
-        // this.fetch = require("node-fetch")
+        this.secret = secret;
     }
-    // loadData() {
-    //     return this._fetch()
-    // }
+    loadData() {
+        return this._fetch()
+    }
+
+    verifyUser() {
+        const url = this.url + '/user'
+        const options = {
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.secret}`,
+            },
+            body: JSON.stringify(),
+        }
+
+        return fetch(url, options).then(resp => {
+            if (resp.ok) {
+                return resp.status;
+            } else if (resp.status === 401) {
+                throw new Error('Unauthorized access')
+            }
+            return new Promise.reject(resp);
+        })
+    }
+
+    getUser(user) {
+        const options = {
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.secret}`,
+            },
+            body: JSON.stringify(),
+        }
+        return this._fetch(options, `/users/${user}`)
+    }
+
+    getRepo(user) {
+        const options = {
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                // Authorization: `token ${this.secret}`,
+            },
+            body: JSON.stringify(),
+        }
+        return this._fetch(options, `/users/${user}/repos`)
+    }
 
     // sendInvitation(repo, user) {
     //     const options = {
@@ -35,19 +66,6 @@ class GitHubSDK {
     //     }
     //     return this._fetch(options, `/${repo}/collaborators/${user}`);
     // }
-    getUser(user) {
-        const secret = `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`;
-
-        const options = {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.github.v3+json',
-                Authorization: `token ${secret}`,
-            },
-            body: JSON.stringify(),
-        }
-        return this._fetch(options, `/users/${user}`)
-    }
 
     _fetch(options, additionalPath = '') {
         const url = this.url + additionalPath;
