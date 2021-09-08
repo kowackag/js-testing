@@ -30,42 +30,59 @@ class GitHubSDK {
     }
 
     getUser(user) {
+        const url = this.url + `/users/${user}`
         const options = {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
-                // Authorization: `token ${this.secret}`,
+                Authorization: `token ${this.secret}`,
             },
             body: JSON.stringify(),
         }
-        return this._fetch(options, `/users/${user}`)
+        return fetch(url, options).then(resp => {
+            if (resp.ok) {
+                return resp.json();
+            } else if (resp.status === 404) {
+                throw new Error('The user was not found')
+            }
+            return new Promise.reject(resp);
+        })
     }
 
     getRepo(user) {
+        const url = this.url + `/users/${user}/repos`
         const options = {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
-                // Authorization: `token ${this.secret}`,
+                Authorization: `token ${this.secret}`,
             },
             body: JSON.stringify(),
         }
-        return this._fetch(options, `/users/${user}/repos`)
+
+        return fetch(url, options).then(resp => {
+            if (resp.ok) {
+                return resp.json();
+            } else if(!resp.ok) {
+               throw new Error('Some Error. Check user name')
+            }
+            return new Promise.reject(resp);
+        })
     }
 
-    // sendInvitation(repo, user) {
-    //     const options = {
-    //         method: 'PUT',
-    //         credentials: 'same-origin',
-    //         redirect: 'follow',
-    //         headers: {
-    //             Accept: 'application/vnd.github.v3+json',
-    //             Authorization: `token ${this.secret}`,
-    //         },
-    //         body: JSON.stringify({
-    //             permission: 'pull'
-    //         }),
-    //     }
-    //     return this._fetch(options, `/${repo}/collaborators/${user}`);
-    // }
+    sendInvitation(repo, user) {
+        const options = {
+            method: 'PUT',
+            credentials: 'same-origin',
+            redirect: 'follow',
+            headers: {
+                Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${this.secret}`,
+            },
+            body: JSON.stringify({
+                permission: 'pull'
+            }),
+        }
+        return this._fetch(options, `/${repo}/collaborators/${user}`);
+    }
 
     _fetch(options, additionalPath = '') {
         const url = this.url + additionalPath;

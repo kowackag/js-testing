@@ -18,14 +18,12 @@ function getRepo(login) {
 }
 
 function insertRepo(data) {
-    // ulEl.innerHTML = '';
+    ulEl.innerHTML = '';
     data.forEach(item => {
         const newLi = createLiEl(item);
         ulEl.appendChild(newLi);
     })
 }
-
-
 
 // -------------------------------
 
