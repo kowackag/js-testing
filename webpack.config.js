@@ -2,7 +2,7 @@ const path = require('path');
 // importuję bibliotekę [path] z [node.js]
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
-    entry: './src/GitHubSDK.js',
+    entry: ['whatwg-fetch', './src/main.js'],
     // definiuję plik wejściowy
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -27,3 +27,4 @@ module.exports = {
         })
     ]
 }
+

@@ -33,7 +33,7 @@ class GitHubSDK {
         const options = {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
-                Authorization: `token ${this.secret}`,
+                // Authorization: `token ${this.secret}`,
             },
             body: JSON.stringify(),
         }

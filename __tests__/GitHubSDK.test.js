@@ -35,18 +35,18 @@ it('should return user', async () => {
     expect(login).toBe('devmentor-pl');
 })
 
-it('should inform when user is not exist', async () => {
-    const github = new GitHubSDK('kowackag', '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');
-    return github.getUser('devmentor-pl').catch(err => {
-        expect(err.statusText).toBe('Not Found');
-    })
-})
+// it('should inform when user is not exist', async () => {
+//     const github = new GitHubSDK();
+//     return github.getUser('devmentor-pl').catch(err => {
+//         expect(err.statusText).toBe('Not Found');
+//     })
+// })
 
 it('should inform account of repositorium', async () => {
     expect.assertions(1);
     const github = new GitHubSDK('kowackag', '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');
-    await github.getUser('kowackag');
-    return github.getRepo('kowackag').then(result => {
+    // await github.getUser('kowackag');
+    return github.getRepo('devmentor-pl').then(result => {
         expect(result.length).toBe(23);
     })
 })
