@@ -30,8 +30,26 @@ function insertRepo(data) {
 function createLiEl(element) {
     const newLiEl = prototypeRepo.cloneNode(true);
     newLiEl.dataset.id = element.id;
-    newLiEl.innerText = element.name;
+    const titleEl = newLiEl.querySelector('.repo__title');
+    titleEl.innerText = element.name;
     newLiEl.classList.remove('.repos__item--prototype');
-    const linkGH = newLiEl.querySelectorAll('.repos__item-linkG');
+    const linkGH = newLiEl.querySelector('.repos__item-linkGH');
+    linkGH.setAttribute('href', element.html_url)
     return newLiEl;
 }
+
+
+
+// function createLiEl(element) {
+//     const newLiEl = prototypeExcursion.cloneNode(true);
+//     newLiEl.dataset.id = element.id;
+//     const titleEl = newLiEl.querySelector('.excursions__title');
+//     titleEl.innerText = element.name;
+//     const descriptionEl = newLiEl.querySelector('.excursions__description');
+//     descriptionEl.innerText = element.description;
+//     newLiEl.classList.remove('excursions__item--prototype');
+//     const fieldList = newLiEl.querySelectorAll('.excursions__field-price');
+//     fieldList[0].innerText = element.adultsPrice;
+//     fieldList[1].innerText = element.childrenPrice;
+//     return newLiEl;
+// }
