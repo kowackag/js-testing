@@ -61,14 +61,15 @@ class GitHubSDK {
         return fetch(url, options).then(resp => {
             if (resp.ok) {
                 return resp.json();
-            } else if(!resp.ok) {
-               throw new Error('Some Error. Check user name')
+            } else if (!resp.ok) {
+                throw new Error('Some Error. Check user name')
             }
             return new Promise.reject(resp);
         })
     }
 
     sendInvitation(repo, user) {
+        const url = this.url + `/repos/${this.nick}/${repo}/collaborators/${user}`
         const options = {
             method: 'PUT',
             credentials: 'same-origin',
@@ -81,18 +82,17 @@ class GitHubSDK {
                 permission: 'pull'
             }),
         }
-        return this._fetch(options, `/${repo}/collaborators/${user}`);
-    }
-
-    _fetch(options, additionalPath = '') {
-        const url = this.url + additionalPath;
-        return fetch(url, options)
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json();
+        return fetch(url, options).then(resp => {
+            if (resp.ok) {
+                if (resp.status === 204) {
+                    throw new Error('person is already a collaborator')
                 }
-                return Promise.reject(resp);
-            });
+                return resp.status;
+            } else if (!resp.ok) {
+                throw new Error('Some error. Check data')
+            }
+            return new Promise.reject(resp);
+        })
     }
 }
 
