@@ -5,13 +5,10 @@ class GitHubSDK {
         this.nick = nick;
         this.secret = secret;
     }
-    loadData() {
-        return this._fetch()
-    }
-
+  
     verifyUser() {
         const url = this.url + '/user'
-        const options = {
+        const options = {   // powtarza się czy mnie powinnam przeniesc do constructor? 
             headers: {
                 Accept: 'application/vnd.github.v3+json',
                 Authorization: `token ${this.secret}`,
