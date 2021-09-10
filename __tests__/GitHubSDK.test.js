@@ -50,7 +50,7 @@ describe('getRepo:', () => {
         expect.assertions(1);
         const github = new GitHubSDK('kowackag', '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');
         return github.getRepo('devmentor-pl').then(result => {
-            expect(result.length).toBe(30);
+            expect(Array.isArray(result)).toBe(true);
         })
     })
 

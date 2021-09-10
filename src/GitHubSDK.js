@@ -6,15 +6,18 @@ class GitHubSDK {
         this.secret = secret;
     }
   
-    verifyUser() {
-        const url = this.url + '/user'
-        const options = {   // powtarza się czy mnie powinnam przeniesc do constructor? 
+    getFetchOptions() {   
+       return {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
                 Authorization: `token ${this.secret}`,
             },
-            body: JSON.stringify(),
-        }
+            body: JSON.stringify(), } 
+    }
+
+    verifyUser() {
+        const url = this.url + '/user'
+        const options = getFetchOptions();
 
         return fetch(url, options).then(resp => {
             if (resp.ok) {
@@ -28,13 +31,8 @@ class GitHubSDK {
 
     getUser(user) {
         const url = this.url + `/users/${user}`
-        const options = {
-            headers: {
-                Accept: 'application/vnd.github.v3+json',
-                Authorization: `token ${this.secret}`,
-            },
-            body: JSON.stringify(),
-        }
+        const options = getFetchOptions();
+
         return fetch(url, options).then(resp => {
             if (resp.ok) {
                 return resp.json();
@@ -47,13 +45,7 @@ class GitHubSDK {
 
     getRepo(user) {
         const url = this.url + `/users/${user}/repos`
-        const options = {
-            headers: {
-                Accept: 'application/vnd.github.v3+json',
-                Authorization: `token ${this.secret}`,
-            },
-            body: JSON.stringify(),
-        }
+        const options = getFetchOptions();
 
         return fetch(url, options).then(resp => {
             if (resp.ok) {
